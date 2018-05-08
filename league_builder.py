@@ -3,8 +3,8 @@ import csv
 import random
 
 Sharks = {'Team Name': 'Sharks'}
-Raptors = {'Team Name': '\n\nRaptors'}
-Dragons = {'Team Name': '\n\nDragons'}
+Raptors = {'Team Name': 'Raptors'}
+Dragons = {'Team Name': 'Dragons'}
 
 experienced = []
 not_experienced = []
@@ -37,12 +37,28 @@ def write_to_file(team1):
 					})
 
 # Generates a file with text for a 'Welcome' letter for each player's guardian.
-def generate_letter(name):
-        s = name.split(" ")
-        text_name = s[0] + '_' + s[1] + '.txt'
-        letter = open(text_name, "a")
-        letter.write("Testing,\n\nThank you,\n\nEnd of letter")
-	   
+def generate_letter(name, parent_name, team_name):
+	s = name.split(" ")
+	text_name = s[0] + '_' + s[1] + '.txt'
+	letter = open(text_name, "a")
+	letter.write("Dear " + parent_name + ",\n\n" +
+		     "Congratulations! " + s[0] + " has been placed onto the " + team_name +
+		     " soccer team.\nWe look forward to " + s[0] + " playing in our junior " +
+		     "soccer league. The first \npractice will be at 2:00 p.m. at the Marsbury " +
+		     "Field at 219 West 29th \nStreet on Tuesday, May 26th.\n\nWe thank you again " +
+		     "for your participation.\n\nSincerely,\n\nBuena Vista Soccer League")
+
+def letters(team1, team2, team3):
+        for key, value in team1.items():
+                if key != 'Team Name':
+                        generate_letter(key, value['Guardian Name(s)'], team1['Team Name'])
+        for key, value in team2.items():
+                if key != 'Team Name':
+                        generate_letter(key, value['Guardian Name(s)'], team2['Team Name'])
+        for key, value in team3.items():
+                if key != 'Team Name':
+                        generate_letter(key, value['Guardian Name(s)'], team3['Team Name'])
+
 
 # Central sorting logic of the program. Places players into two different
 # lists based on their experience level, and then distributes those players
@@ -74,7 +90,7 @@ if __name__ == "__main__":
 			elif team==3:
 				add_dict(Dragons, row)
 				team -= 2
-		print(team)
+				
 		#Evenly divide up non-experienced players into teams as dictionaries.
 		#Begins cycle on current 'team' integer, picking up where previous for-loop left off.
 		for row in not_experienced:
@@ -92,13 +108,12 @@ if __name__ == "__main__":
 				team -= 2
 				
 
-	# Writes each dictionary to the new .txt file.	
+	# Writes each dictionary to the new .txt file.  
 	write_to_file(Sharks)
 	write_to_file(Raptors)
 	write_to_file(Dragons)
 
-	generate_letter("Thomas Ransom")
-
-
+	# Generate letter for all parents
+	letters(Sharks, Raptors, Dragons)
 	
 				
