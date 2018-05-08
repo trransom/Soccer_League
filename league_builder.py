@@ -1,6 +1,5 @@
 # League Builder
 import csv
-import random
 
 Sharks = {'Team Name': 'Sharks'}
 Raptors = {'Team Name': 'Raptors'}
@@ -22,19 +21,23 @@ def add_dict(dict_name, row):
 # player's name, whether they've played soccer before,
 # and the name(s) of the player's legal guardians.
 def write_to_file(team1):
-	text_file = open("teams.txt", "a")
-	text_file.write(team1['Team Name']+"\n")
-	text_file.close()
-	with open('teams.txt', 'a') as txtfile:
-		fieldnames = ['Name', 'Experience', 'Guardians']
-		teamwriter = csv.DictWriter(txtfile, fieldnames=fieldnames)
-		for key, value in team1.items():
-			if key != 'Team Name':
-				teamwriter.writerow({
-					'Name': key,
-					'Experience': value['Experience'],
-					'Guardians': value['Guardian Name(s)']
-					})
+        
+        text_file = open("teams.txt", "a")
+        if team1['Team Name']=='Sharks':
+                text_file.write(team1['Team Name']+"\n")
+        else:
+                text_file.write("\n\n" + team1['Team Name'] + "\n")
+        text_file.close()
+        with open('teams.txt', 'a') as txtfile:
+                fieldnames = ['Name', 'Experience', 'Guardians']
+                teamwriter = csv.DictWriter(txtfile, fieldnames=fieldnames)
+                for key, value in team1.items():
+                        if key != 'Team Name':
+                                teamwriter.writerow({
+                                        'Name': key,
+                                        'Experience': value['Experience'],
+                                        'Guardians': value['Guardian Name(s)']
+                                        })
 
 # Generates a file with text for a 'Welcome' letter for each player's guardian.
 def generate_letter(name, parent_name, team_name):
@@ -48,6 +51,9 @@ def generate_letter(name, parent_name, team_name):
 		     "Field at 219 West 29th \nStreet on Tuesday, May 26th.\n\nWe thank you again " +
 		     "for your participation.\n\nSincerely,\n\nBuena Vista Soccer League")
 
+# Generates letters for each parent by cycling through each team dictionary
+# and grabbing the associated values to construct the letter (i.e. parents'
+# name, child's name, team name, etc)
 def letters(team1, team2, team3):
         for key, value in team1.items():
                 if key != 'Team Name':
@@ -75,7 +81,7 @@ if __name__ == "__main__":
 			else:
 				not_experienced.append(row)
 				
-		#Evenly divide up experienced players into teams as dictionaries.
+		#Evenly divides up experienced players into teams as dictionaries.
 		team = 1
 		for row in experienced:
 			#Add to sharks
@@ -91,7 +97,7 @@ if __name__ == "__main__":
 				add_dict(Dragons, row)
 				team -= 2
 				
-		#Evenly divide up non-experienced players into teams as dictionaries.
+		#Evenly divides up non-experienced players into teams as dictionaries.
 		#Begins cycle on current 'team' integer, picking up where previous for-loop left off.
 		for row in not_experienced:
 			#Add to sharks
@@ -114,6 +120,6 @@ if __name__ == "__main__":
 	write_to_file(Dragons)
 
 	# Generate letter for all parents
-	letters(Sharks, Raptors, Dragons)
+	#letters(Sharks, Raptors, Dragons)
 	
 				
