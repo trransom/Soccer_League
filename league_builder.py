@@ -2,9 +2,9 @@
 import csv
 import random
 
-Sharks = {}
-Raptors = {}
-Dragons = {}
+Sharks = {'Team Name': 'Sharks'}
+Raptors = {'Team Name': '\n\nRaptors'}
+Dragons = {'Team Name': '\n\nDragons'}
 
 experienced = []
 not_experienced = []
@@ -14,6 +14,24 @@ def add_dict(dict_name, row):
 	exp = row['Soccer Experience']
 	guardian = row['Guardian Name(s)']
 	dict_name[name] = {'Experience': exp, 'Guardian Name(s)': guardian}
+	
+
+def write_to_file(team1):
+        text_file = open("teams.txt", "a")
+        text_file.write(team1['Team Name']+"\n")
+        text_file.close()
+        with open('teams.txt', 'a') as txtfile:
+                fieldnames = ['Name', 'Experience', 'Guardians']
+                teamwriter = csv.DictWriter(txtfile, fieldnames=fieldnames)
+                for key, value in team1.items():
+                        if key != 'Team Name':
+                                teamwriter.writerow({
+                                        'Name': key,
+                                        'Experience': value['Experience'],
+                                        'Guardians': value['Guardian Name(s)']
+                                        })
+           
+
 
 if __name__ == "__main__":
 	with open('soccer_players.csv', newline='') as soccerfile:
@@ -58,27 +76,36 @@ if __name__ == "__main__":
 			if team==1:
 				add_dict(Sharks, row)
 				team += 1
-				print("Team is now " + str(team))
 			#Add to raptors
 			elif team==2:
 				add_dict(Raptors, row)
 				team += 1
-				print("Team is now " + str(team))
 			#Add to dragons
 			elif team==3:
 				add_dict(Dragons, row)
 				team -= 2
-				print("Team is now " + str(team))
 
 
 
-print(len(Sharks.keys()))
-for key in list(Sharks.keys()):
-        print(key)
-print(len(Raptors.keys()))
-for key in list(Raptors.keys()):
-        print(key)
-print(len(Dragons.keys()))
-for key in list(Dragons.keys()):
-        print(key)
+##print(len(Sharks.keys()))
+##for key in list(Sharks.keys()):
+##	print(key)
+##print(len(Raptors.keys()))
+##for key in list(Raptors.keys()):
+##	print(key)
+##print(len(Dragons.keys()))
+##for key in list(Dragons.keys()):
+##	print(key)
+
+##for keys,values in Sharks.items():
+##    print(keys)
+##    print(values)
+
+	
+write_to_file(Sharks)
+write_to_file(Raptors)
+write_to_file(Dragons)
+
+
+	
 				
